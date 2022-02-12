@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vision.depressedmate.mapper.UserMapper">
+
+    <insert id="join" parameterType="User">
+        INSERT INTO dm_test.t_user (user_id, password, nickname, email, mobile, birth, interest)
+        VALUES (#{userId}, #{password}, #{nickname}, #{email}, #{mobile}, #{birth}, #{interest})
+    </insert>
+
+    <select id="login" parameterType="String" resultType="User">
+        SELECT user_id,
+               nickname,
+               email,
+               mobile,
+               birth,
+               interest,
+               created_at
+        FROM dm_test.t_user
+        WHERE user_id = #{userId}
+        AND password = #{password}
+    </select>
+
+</mapper>
