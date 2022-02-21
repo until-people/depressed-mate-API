@@ -22,4 +22,10 @@
         AND password = #{password}
     </select>
 
+    <select id="getAllUser" resultType="List">
+        SELECT *
+        FROM dm_test.t_user
+    </select>
+
+
 </mapper>
