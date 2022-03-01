@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -48,4 +50,7 @@ public class UserService {
         return "똑같은 결과값";
     }
 
+    public List<User> getAllUser() {
+        return userMapper.getAllUser();
+    }
 }

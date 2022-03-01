@@ -22,7 +22,7 @@
         AND password = #{password}
     </select>
 
-    <select id="getAllUser" resultType="List">
+    <select id="getAllUser" resultType="User">
         SELECT *
         FROM dm_test.t_user
     </select>
