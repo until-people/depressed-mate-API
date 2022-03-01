@@ -1,44 +1,42 @@
 package com.vision.depressedmate.controller;
 
-import org.elasticsearch.action.index.IndexRequest;
+import com.vision.depressedmate.model.common.Result;
+import com.vision.depressedmate.service.ElasticsearchTestService;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.core.TimeValue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
+@RequestMapping("/elastic")
 public class ElasticsearchTestController {
 
-    private final RestHighLevelClient restHighLevelClient;
+    private final ElasticsearchTestService elasticsearchTestService;
 
-    public ElasticsearchTestController(RestHighLevelClient restHighLevelClient) {
-        this.restHighLevelClient = restHighLevelClient;
+    @Autowired
+    public ElasticsearchTestController(ElasticsearchTestService elasticsearchTestService) {
+        this.elasticsearchTestService = elasticsearchTestService;
+    }
+
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Result createDocument(@RequestParam("index") String index,
+                                 @RequestParam("activity") String activity) throws IOException {
+
+        IndexResponse response = elasticsearchTestService.createDocument(index, activity);
+
+        Result result = new Result("SUCCESS");
+        result.setResultData(response);
+
+        return result;
     }
 
     @PostMapping("/post")
     public IndexResponse testInserting() throws IOException {
-        Map<String, Object> source = new HashMap<>();
-        source.put("message", "hello, world!");
-        source.put("message1", "hello, world!");
-        source.put("message2", "hello, world!");
-        source.put("message3", "hello, world!");
-        source.put("message4", "hello, world!");
-        source.put("message5", "hello, world!");
-        String index = "test";
-
-        IndexRequest request = new IndexRequest()
-                .index(index)
-                .source(source, XContentType.JSON)
-                .timeout(TimeValue.timeValueSeconds(30));
-
-        IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
-        return response;
+        return elasticsearchTestService.testInserting();
     }
 }

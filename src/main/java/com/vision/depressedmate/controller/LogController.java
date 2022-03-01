@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/log", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LogController {
 
     private final LogService logService;
@@ -18,7 +18,7 @@ public class LogController {
         this.logService = logService;
     }
 
-    @PostMapping(value = "/log/history", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/history", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Result recordHistory(@ModelAttribute Log log) {
         logService.recordHistory(log);
         return new Result("SUCCESS");
